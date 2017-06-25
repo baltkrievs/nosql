@@ -33,7 +33,10 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/">Home</a>
+                    <a href="#" th:href="@{/}">Home</a>
+                </li>
+                <li>
+                    <a href="#" th:href="@{/overdue}">Overdue</a>
                 </li>
             </ul>
             <div class="nav navbar-right">
@@ -62,18 +65,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1.1.2014</td>
-                <td>Task name</td>
-                <td>development</td>
-                <td>30.06.2017</td>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.creationDate}">1.1.2014</td>
+                <td th:text="${task.name}">Task name</td>
+                <td><a href="#" th:href="${'/category/' + task.category}" th:text="${task.category}">development</a></td>
+                <td th:text="${task.deadline}">30.06.2017</td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span>
-                        Edit
-                    </button>
-                    <button type="button" class="btn btn-danger btn-xs"><span
-                            class="glyphicon glyphicon-remove-circle"></span> Remove
-                    </button>
+                    <form method="post" th:action="@{/update}">
+                        <input type="hidden" name="id" th:value="${task.id}"/>
+                        <button type="submit" name="action" class="btn btn-primary btn-xs" value="update">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Edit
+                        </button>
+                        <button type="submit" name="action" class="btn btn-danger btn-xs" value="remove">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            Remove
+                        </button>
+                    </form>
                 </td>
             </tr>
             </tbody>
